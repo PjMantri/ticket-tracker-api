@@ -21,19 +21,20 @@ public class TicketDAOImpl extends GenericDAOImpl<Ticket, Integer> implements
 
 	@SuppressWarnings("unchecked")
 	public List<Ticket> findTicketsAssignedToUser(User user) {
-		return em.createNamedQuery("findTicketsAssignedToUser")
+		return em
+				.createQuery("select t from Ticket t where t.assignedTo=:user")
 				.setParameter("user", user).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Ticket> findTicketsCreatedByUser(User user) {
-		return em.createNamedQuery("findTicketsCreatedByUser")
+		return em.createQuery("select t from Ticket t where t.createdBy=:user")
 				.setParameter("user", user).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Ticket> findTicketsRelatedToCustomer(User user) {
-		return em.createNamedQuery("findTicketsRelatedToCustomer")
+		return em.createQuery("select t from Ticket t where t.customer=:user")
 				.setParameter("user", user).getResultList();
 	}
 

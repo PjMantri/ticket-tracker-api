@@ -65,5 +65,7 @@ public class UserDAOTest {
 		Set<ConstraintViolation<User>> violations = validator.validate(user);
 		assertEquals(1, violations.size());
 	}
+	
+	
 
 }
