@@ -16,4 +16,5 @@ public interface TicketDAO extends GenericDAO<Ticket, Integer> {
 	List<Ticket> findTicketsCreatedByUser(User user);
 
 	List<Ticket> findTicketsRelatedToCustomer(User user);
+
 }

@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.tickettracker.service.TicketService;
+import com.tickettracker.service.UserService;
+
 /**
  * 
  * @author Pooja Mantri
@@ -18,11 +21,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TicketConfigurationTest {
 
 	@Autowired
-	TicketConfiguration tc;
+	TicketConfiguration config;
+
+	@Autowired
+	TicketService ticketService;
+
+	@Autowired
+	UserService userService;
 
 	@Test
 	public void shouldNotBeNull() {
-		assertNotNull(tc);
+		assertNotNull(config);
+		assertNotNull(ticketService);
+		assertNotNull(userService);
 	}
 
 }
