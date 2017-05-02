@@ -1,0 +1,19 @@
+## Java classes
+target/
+bin/
+classes/
+*.class
+
+## IDE related
+.classpath
+.settings/
+.project
+.metadata
+.idea/
+*.iml
+
+## Other
+styles.css
+nb-configuration.xml
+
+.tern-project
