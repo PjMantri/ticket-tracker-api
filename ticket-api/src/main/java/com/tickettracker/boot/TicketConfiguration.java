@@ -1,5 +1,7 @@
 package com.tickettracker.boot;
 
+import java.util.Arrays;
+
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
@@ -11,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -80,4 +84,13 @@ public class TicketConfiguration {
 	public BeanPostProcessor persistenceTranslation() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
+	
+	@Bean
+	public MappingJackson2HttpMessageConverter jsonConverter() {
+	    MappingJackson2HttpMessageConverter jacksonConverter = new
+	            MappingJackson2HttpMessageConverter();
+	    jacksonConverter.setSupportedMediaTypes(Arrays.asList(MediaType.valueOf("application/json")));
+	    return jacksonConverter;
+	}
+
 }

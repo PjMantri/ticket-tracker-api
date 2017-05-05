@@ -24,20 +24,16 @@ public class TicketService {
 	@Inject
 	TicketDAO ticketDAO;
 
-	public Ticket getTicket(int id) {
+	public Ticket findTicket(int id) {
 		return ticketDAO.findById(id);
 	}
 
-	public List<Ticket> getAllTickets() {
+	public List<Ticket> findAll() {
 		return ticketDAO.findAll();
 	}
 
-	public void createTicket(Ticket ticket) {
-		ticketDAO.merge(ticket);
-	}
-
-	public void updateTicket(Ticket ticket) {
-		ticketDAO.merge(ticket);
+	public Ticket merge(Ticket ticket) {
+		return ticketDAO.merge(ticket);
 	}
 
 	public void deleteTicket(Ticket ticket) {

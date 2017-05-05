@@ -19,20 +19,16 @@ public class UserService {
 	@Inject
 	UserDAO userDAO;
 
-	public User getUser(int id) {
+	public User findUser(int id) {
 		return userDAO.findById(id);
 	}
 
-	public List<User> getAllUsers() {
+	public List<User> findAll() {
 		return userDAO.findAll();
 	}
 
-	public void createUser(User user) {
-		userDAO.merge(user);
-	}
-
-	public void updateUser(User user) {
-		userDAO.merge(user);
+	public User merge(User user) {
+		return userDAO.merge(user);
 	}
 
 	public void deleteUser(User user) {
