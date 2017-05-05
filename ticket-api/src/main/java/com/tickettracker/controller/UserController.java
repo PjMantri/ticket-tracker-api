@@ -36,7 +36,6 @@ public class UserController {
 		return userService.findAll();
 	}
 
-
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<User> saveTicket(@RequestBody User user,
 			UriComponentsBuilder uriComponentsBuilder) {

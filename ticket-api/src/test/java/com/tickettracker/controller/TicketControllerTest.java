@@ -24,8 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.tickettracker.boot.TicketConfiguration;
-import com.tickettracker.domain.User;
-import com.tickettracker.service.UserService;
+import com.tickettracker.domain.Ticket;
+import com.tickettracker.service.TicketService;
 
 /**
  * @author Pooja Mantri
@@ -33,14 +33,14 @@ import com.tickettracker.service.UserService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TicketConfiguration.class)
-public class UserControllerTest {
+public class TicketControllerTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private UserService userService;
+	private TicketService ticketService;
 
 	@Autowired
-	private UserController userController;
+	private TicketController ticketController;
 
 	@Autowired
 	private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
@@ -48,30 +48,47 @@ public class UserControllerTest {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(ticketController).build();
 	}
 
 	@Test
-	public void shouldCreateUser() throws Exception {
-		User user = new User("Phoebe Buffay", "phoebe.buffay@gmail.com",
-				"Actress");
+	public void shouldCreateTicket() throws Exception {
+		Ticket ticket = new Ticket();
+		ticket.setStatus("Open");
 		mockMvc.perform(
-				post("/user").contentType(MediaType.APPLICATION_JSON).content(
-						json(user))).andExpect(
-				jsonPath("$.name").value("Phoebe Buffay"));
+				post("/ticket").contentType(MediaType.APPLICATION_JSON)
+						.content(json(ticket))).andExpect(
+				jsonPath("$.status").value("Open"));
 	}
 
 	@Test
-	public void shouldDeleteUser() throws Exception {
+	public void shouldUpdateTicket() throws Exception {
+		Ticket ticket = ticketService.findTicket(6);
+		ticket.setStatus("Closed");
 		mockMvc.perform(
-				delete("/user/{id}", 7).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				post("/ticket").contentType(MediaType.APPLICATION_JSON)
+						.content(json(ticket))).andExpect(
+				jsonPath("$.status").value("Closed"));
 	}
 
 	@Test
-	public void shouldFetchUserById() throws Exception {
-		mockMvc.perform(get("/user/2")).andExpect(
-				jsonPath("$.name").value("Pooja Mantri"));
+	public void shouldDeleteTicket() throws Exception {
+		mockMvc.perform(
+				delete("/ticket/{id}", 3).contentType(
+						MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void shouldFetchTicketById() throws Exception {
+		mockMvc.perform(get("/ticket/1")).andExpect(
+				jsonPath("$.area").value("Mumbai"));
+	}
+
+	@Test
+	public void shouldFetchAllTickets() throws Exception {
+		mockMvc.perform(get("/ticket")).andExpect(status().isOk())
+				.andExpect(jsonPath("$", hasSize(4)))
+				.andExpect(jsonPath("$[0].area", is("Mumbai")));
 	}
 
 	private String json(Object o) throws IOException {
@@ -81,19 +98,4 @@ public class UserControllerTest {
 		return mockHttpOutputMessage.getBodyAsString();
 	}
 
-	@Test
-	public void shouldFetchAllUsers() throws Exception {
-		mockMvc.perform(get("/user")).andExpect(status().isOk())
-				.andExpect(jsonPath("$", hasSize(5)))
-				.andExpect(jsonPath("$[0].id", is(2)));
-	}
-
-	@Test
-	public void shouldUpdateUser() throws Exception {
-		User user = userService.findUser(2);
-		user.setType("CTO");
-		mockMvc.perform(
-				post("/user").contentType(MediaType.APPLICATION_JSON).content(
-						json(user))).andExpect(jsonPath("$.type").value("CTO"));
-	}
 }

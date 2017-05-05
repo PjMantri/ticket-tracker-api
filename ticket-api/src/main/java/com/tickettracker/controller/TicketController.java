@@ -70,5 +70,10 @@ public class TicketController {
 		int ticketId = e.getTicketId();
 		return new Error(4, "Ticket [" + ticketId + "] not found");
 	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public void deleteTicket(@PathVariable int id) {
+		ticketService.deleteTicket(id);
+	}
 
 }
