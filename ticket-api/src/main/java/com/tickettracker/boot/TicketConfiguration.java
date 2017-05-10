@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -23,13 +25,14 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * @author Pooja Mantri
  *
  */
 @Configuration
-@ComponentScan(basePackages = "com.tickettracker")
+@ComponentScan(basePackages = "com.tickettracker", excludeFilters = { @Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class) })
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
 public class TicketConfiguration {
@@ -84,13 +87,13 @@ public class TicketConfiguration {
 	public BeanPostProcessor persistenceTranslation() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
-	
+
 	@Bean
 	public MappingJackson2HttpMessageConverter jsonConverter() {
-	    MappingJackson2HttpMessageConverter jacksonConverter = new
-	            MappingJackson2HttpMessageConverter();
-	    jacksonConverter.setSupportedMediaTypes(Arrays.asList(MediaType.valueOf("application/json")));
-	    return jacksonConverter;
+		MappingJackson2HttpMessageConverter jacksonConverter = new MappingJackson2HttpMessageConverter();
+		jacksonConverter.setSupportedMediaTypes(Arrays.asList(MediaType
+				.valueOf("application/json")));
+		return jacksonConverter;
 	}
 
 }
