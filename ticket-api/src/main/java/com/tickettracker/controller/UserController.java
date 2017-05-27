@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,11 +32,13 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
+	@CrossOrigin("*")
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public List<User> users() {
 		return userService.findAll();
 	}
 
+	@CrossOrigin("*")
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<User> saveTicket(@RequestBody User user,
 			UriComponentsBuilder uriComponentsBuilder) {
@@ -50,12 +53,14 @@ public class UserController {
 				userCreated, headers, HttpStatus.CREATED);
 		return responseEntity;
 	}
-	
+
+	@CrossOrigin(origins = "*")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteUser(@PathVariable int id) {
 		userService.deleteUser(id);
 	}
 
+	@CrossOrigin(origins = "*")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public User userByID(@PathVariable int id) {
 		User user = userService.findUser(id);

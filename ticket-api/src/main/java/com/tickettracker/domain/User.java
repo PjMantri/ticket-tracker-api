@@ -1,5 +1,7 @@
 package com.tickettracker.domain;
 
+import java.io.IOException;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Pooja Mantri
@@ -30,6 +35,24 @@ public class User {
 
 	public User() {
 
+	}
+
+	public User(String jsonString) throws JsonParseException,
+			JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		User user = mapper.readValue(jsonString, User.class);
+		this.id = user.id;
+		this.name = user.name;
+		this.email = user.email;
+		this.type = user.type;
+	}
+
+	public User(int id, String name, String email, String type) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.type = type;
 	}
 
 	public User(String name, String email, String type) {
@@ -67,7 +90,7 @@ public class User {
 		this.type = type;
 	}
 
-	// // TODO try cascade
+	// TODO try cascade
 	// @OneToMany(mappedBy = "assignedTo", cascade = CascadeType.PERSIST)
 	// public Collection<Ticket> ticketsAssigned = new ArrayList<Ticket>();
 

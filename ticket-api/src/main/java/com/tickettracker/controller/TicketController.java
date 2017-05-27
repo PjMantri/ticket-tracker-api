@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,26 +36,29 @@ public class TicketController {
 	@Autowired
 	UserService userService;
 
+	@CrossOrigin("*")
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public List<Ticket> tickets() {
 		return ticketService.findAll();
 	}
 
+	@CrossOrigin("*")
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<Ticket> saveTicket(@RequestBody Ticket ticket,
 			UriComponentsBuilder uriComponentsBuilder) {
 		Ticket ticketCreated = ticketService.merge(ticket);
-		
+
 		HttpHeaders headers = new HttpHeaders();
 		URI locationUri = uriComponentsBuilder.path("/ticket/")
 				.path(String.valueOf(ticketCreated.getId())).build().toUri();
 		headers.setLocation(locationUri);
-		
+
 		ResponseEntity<Ticket> responseEntity = new ResponseEntity<Ticket>(
 				ticketCreated, headers, HttpStatus.CREATED);
 		return responseEntity;
 	}
 
+	@CrossOrigin("*")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Ticket ticketByID(@PathVariable int id) {
 		Ticket ticket = ticketService.findTicket(id);
@@ -70,7 +74,8 @@ public class TicketController {
 		int ticketId = e.getTicketId();
 		return new Error(4, "Ticket [" + ticketId + "] not found");
 	}
-	
+
+	@CrossOrigin("*")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteTicket(@PathVariable int id) {
 		ticketService.deleteTicket(id);

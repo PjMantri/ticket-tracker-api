@@ -1,5 +1,6 @@
 package com.tickettracker.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,19 +27,19 @@ public class Ticket {
 	private String area;
 	private String description;
 
-	@org.hibernate.annotations.Formula("substr(description, 1, 12)")
-	@Transient
-	protected String shortDescription;
+//	@org.hibernate.annotations.Formula("substr(description, 1, 12)")
+//	@Transient
+//	protected String shortDescription;
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})	
 	@JoinColumn(name = "customer", referencedColumnName = "USER_ID")
 	private User customer;
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "created_by", referencedColumnName = "USER_ID")
 	private User createdBy;
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "assigned_to", referencedColumnName = "USER_ID")
 	private User assignedTo;
 
@@ -74,13 +75,13 @@ public class Ticket {
 		this.description = description;
 	}
 
-	public String getShortDescription() {
-		return description;
-	}
-
-	public void setShortDescription(String shortDescription) {
-		this.shortDescription = shortDescription;
-	}
+//	public String getShortDescription() {
+//		return description;
+//	}
+//
+//	public void setShortDescription(String shortDescription) {
+//		this.shortDescription = shortDescription;
+//	}
 
 	public User getCustomer() {
 		return customer;
